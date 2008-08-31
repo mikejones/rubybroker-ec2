@@ -31,7 +31,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
     
     task :install_merb do
-      run "gem install merb -v0.9.4 --no-ri --no-rdoc"
+      run "gem install merb-core -v0.9.4 --no-ri --no-rdoc"
     end
     
     task :install_missing_gems do
