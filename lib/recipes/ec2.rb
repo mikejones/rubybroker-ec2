@@ -26,15 +26,15 @@ Capistrano::Configuration.instance(:must_exist).load do
       install_mysql
       install_git
       install_merb
-      install_rubigen
+      install_missing_gems
       setup_virtual_host
     end
     
     task :install_merb do
-      run "gem install merb-core --no-ri --no-rdoc"
+      run "gem install merb -v0.9.4 --no-ri --no-rdoc"
     end
     
-    task :install_rubigen do
+    task :install_missing_gems do
       run "gem install rubigen --no-ri --no-rdoc"
     end
   
@@ -53,7 +53,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   echo "#phusion passenger" >> /etc/apache2/apache2.conf &&
   echo "LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3/ext/apache2/mod_passenger.so" >> /etc/apache2/apache2.conf &&
   echo "PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3" >> /etc/apache2/apache2.conf &&
-  echo "PassengerRuby /usr/bin/ruby1.8" >> apache2.conf &&
+  echo "PassengerRuby /usr/bin/ruby1.8" >> apache2.conf
       CMD
   # /etc/init.d/apache2 restart
     end
@@ -76,6 +76,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
     task :setup_virtual_host do
       run <<-CMD
+      
   echo "127.0.0.1 localhost #{instance_url}" >> /etc/hosts &&
   echo "<VirtualHost *>" >> /etc/apache2/sites-available/#{application} &&
   echo "    ServerName #{instance_url}" >> /etc/apache2/sites-available/#{application} &&
@@ -83,9 +84,8 @@ Capistrano::Configuration.instance(:must_exist).load do
   echo "    ErrorLog #{deploy_to}/current/log/error.log" >> /etc/apache2/sites-available/#{application} &&
   echo "</VirtualHost>" >> /etc/apache2/sites-available/#{application} &&
   cd /etc/apache2/sites-available &&
-  a2ensite #{application} &&
+  a2ensite #{application} 
       CMD
-  # apache2ctl graceful
     end
   end
 end
