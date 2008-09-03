@@ -1,4 +1,5 @@
 Capistrano::Configuration.instance(:must_exist).load do
+  set :merb_version, "0.9.5"
   set :image_id, "ami-bded09d4"
   set :deploy_to, "/mnt/apps/#{application}"
   set :username, "root"

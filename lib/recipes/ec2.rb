@@ -31,7 +31,22 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
     
     task :install_merb do
-      run "gem install merb-core -v0.9.4 --no-ri --no-rdoc"
+      if merb_version == "0.9.5"
+        install_libxml
+        install_memcacheclient
+      end
+      run "gem install merb -v #{merb_version} --no-ri --no-rdoc"
+    end
+    
+    task :install_memcacheclient do
+      run "gem install memcache-client --no-ri --no-rdoc"
+    end
+    
+    task :install_libxml do
+      run <<-CMD 
+  apt-get install libxml2-dev -y &&
+  gem install libxml-ruby --no-ri --no-rdoc
+      CMD
     end
     
     task :install_missing_gems do
