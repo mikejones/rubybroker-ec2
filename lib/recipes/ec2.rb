@@ -74,7 +74,8 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
   
     task :install_mysql do
-      run "apt-get install mysql-server -y"
+      run "apt-get install mysql-server mysql-client libmysqlclient15-dev libmysql-ruby -y"
+      run "gem install mysql"
     end
   
     task :install_git do
